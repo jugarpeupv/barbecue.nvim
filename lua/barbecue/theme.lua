@@ -163,7 +163,7 @@ end
 function M.get_file_icon(filename, filetype)
   if not devicons_ok then return nil end
 
-  local basename = vim.fn.fnamemodify(filename, ":t")
+  local basename = vim.fn.fnamemodify(filename, ":t"):gsub("%s", "_")
   local extension = vim.fn.fnamemodify(filename, ":e")
   local icons = devicons.get_icons()
   -- local icon_text =
@@ -171,7 +171,7 @@ function M.get_file_icon(filename, filetype)
 
   local icon_text, icon_color = devicons.get_icon_color(basename, file_extension(basename), { default = false })
 
-  local icon = icons[basename] or icons[extension]
+  local icon = icons[extension] or icons[basename]
   if icon == nil then
     local name = devicons.get_icon_name_by_filetype(filetype)
     icon = icons[name] or devicons.get_default_icon()
