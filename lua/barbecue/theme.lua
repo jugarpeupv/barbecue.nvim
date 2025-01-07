@@ -169,7 +169,11 @@ function M.get_file_icon(filename, filetype)
   -- local icon_text =
   --   devicons.get_icon(basename, file_extension(basename), { default = false })
 
-  local icon_text, icon_color = devicons.get_icon_color(basename, file_extension(basename), { default = false })
+  local icon_text, icon_color = devicons.get_icon_color(
+    basename,
+    file_extension(basename),
+    { default = false }
+  )
 
   local icon = icons[extension] or icons[basename]
   if icon == nil then
@@ -178,23 +182,22 @@ function M.get_file_icon(filename, filetype)
     if icon == nil then return nil end
   end
 
-  local highlight = string.format("barbecue_fileicon_%s", file_extension(basename))
-  if file_icons[file_extension(basename)] == nil then
-    file_icons[file_extension(basename)] = {
-      highlight = highlight,
-      color = icon.color,
-    }
+  local highlight =
+    string.format("barbecue_fileicon_%s", file_extension(basename))
+  file_icons[file_extension(basename)] = {
+    highlight = highlight,
+    color = icon_color or icon.color,
+  }
 
-    vim.api.nvim_set_hl(
-      0,
-      highlight,
-      vim.tbl_extend(
-        "force",
-        current_theme ~= nil and current_theme.normal or {},
-        { foreground = icon_color or icon.color }
-      )
+  vim.api.nvim_set_hl(
+    0,
+    highlight,
+    vim.tbl_extend(
+      "force",
+      current_theme ~= nil and current_theme.normal or {},
+      { foreground = icon_color or icon.color }
     )
-  end
+  )
 
   return {
     icon_text or icon.icon,
