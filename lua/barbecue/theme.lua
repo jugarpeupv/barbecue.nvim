@@ -182,9 +182,11 @@ function M.get_file_icon(filename, filetype)
     if icon == nil then return nil end
   end
 
-  local highlight =
-    string.format("barbecue_fileicon_%s", file_extension(basename))
-  file_icons[file_extension(basename)] = {
+  local extension = file_extension(basename)
+  local sanitized_extension = extension:gsub("[^%w%.]", "_")
+  local highlight = string.format("barbecue_fileicon_%s", sanitized_extension)
+
+  file_icons[sanitized_extension] = {
     highlight = highlight,
     color = icon_color or icon.color,
   }
